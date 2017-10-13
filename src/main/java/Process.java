@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class Process {
     private static final Logger logger = LogManager.getLogger(BiCorpus.class);
     private static double alpha = 10;
-    private static double beta = 9;
+    private static double beta = 10;
     private static double gamma = 1;
     private static double sigma = 0.1;
 
@@ -176,9 +176,9 @@ public class Process {
 
                 if (j == i )
                     wordScoreWordI.getWordScore().put(target[j], score * Process.alpha);
-                else if ( Math.abs(i-j) == 3)
+                else if ( Math.abs(i-j) <= 3)
                     wordScoreWordI.getWordScore().put(target[j], score * Process.beta);
-                else if ( Math.abs(i-j) == 4)
+                else if ( Math.abs(i-j) <= 5)
                     wordScoreWordI.getWordScore().put(target[j], score * Process.gamma);
                 else
                     wordScoreWordI.getWordScore().put(target[j], score * Process.sigma);
