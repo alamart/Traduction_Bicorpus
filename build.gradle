@@ -1,7 +1,9 @@
 version '1.0-SNAPSHOT'
+plugins {
+    id "org.sonarqube" version "2.5"
+}
 
 apply plugin: 'java'
-apply plugin: 'org.sonarqube'
 
 sourceCompatibility = 1.8
 
