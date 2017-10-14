@@ -3,17 +3,17 @@ sudo: false
 install: true
 addons:
   sonarcloud:
-    organization: "14026f0d1d2d2b30c10e146508a3ec11a2c3e146"
+    organization: 14026f0d1d2d2b30c10e146508a3ec11a2c3e146
     token:
-      secure: "op8vpR6xDLhMlB2CsYnt9ThGm6gmlY6hPDCzkDcLBWiH4R0i2OvqGdIPV2d/MajUlXUeXfUPqZal4+FMnyyKBv9cmwqK2git78+E/uOg421H46WO0R0N9H8acoZrkMLkpqf19bokYjTqFTTRHrfFuSuqMeu32BzPbZN21C9EzNavXpH8ZrYPpVhktCa6ChFWGH1IsHMKQ/816g9dPDwPKZlTddA1ZqT4iDAn5jgu0AI/cZq8BpqQJF8ECl8AGmFnGhV3g3c7PVfMOvn9huZvGeG+w+3PFOaGs4cD+A4H+k2MWXN5aRXEF8VKXna2NaauDOXq5IvkeTRjp6hwzPirei4w2q9q61kKNQR0rVjygJikSgKeO1jGvmzlUcJr1OY2IyN35Qx1K5aN4ds0IXz4moAYjRspuQ9XNYa0RvRKdCDqcIT4YU5coxq6eKznpYysgpWmhw/M6ezbtAwPtcAyey//7tf+HloT3z7k7n7qTxIAnXmBmP4EvJQ2Txl4leOR/aSno/N7hQChowSi2Z4FHxSt8f2hDmxoAdAPncbFqB+M9yJUDHVH2j5BVTq75Aiy15nrAjdQi2J4GimmcU//2GwtcFhaITwqEChizdliMXm33ySJAiT6Abg0mZV9Dg1/FmONdPQfk2xM3MP98jqEVw2VysMNfFrC10jt0SxvZKQ="
-
+      secure: VYDMfC1I7hZ0htdI36if0+d+6V661Iw23M5jJE7dZ2pPb+C7GLSuyb20TLOXLKY5N5KWk4ICuITMxDqnTYpXZkMcK2d3YrwCd7MDzGzF+V/dH+iJ10IOf1ltNN0jhZggPS/rspJPBY9OTb2KWTkno7FaKUyUKNX220tuM2PY0UXtQGKkE769StZ93MOrTTrhUzDTu9hMGsLFmoVz3n7K2ISOmHl2oqgCDTgujDrgrWOFmF1P0bRDgsAC68NAuYUlUJF4GS3YsrJIrECF6hNh71ozp5YLCyEPFllA34QnsEcPa7BNspspbm7udm8xuf9vVoFZUv+uFy9or1A17WPKyaSTea0A1GJoamQFYsZ93Z74SbP1VvcFOGvVqN1XXsbJjCRHjyj3mujznKNqcyWUm24iKGMRkwseVi/Sg1iWkJm5tsYuRnMDnW3IfYuvLVvbY1w/ONk+xtZ1i5ng+8/N24d0N4kKvSbV3osPB0vpHcpJaHmKHSp2CffVL0iC8hN6I8F5E5w58c6yojoRNQvQ/0PMC4ONK+RVo9RginNka/LOjKyfwBrND0lGSRp2WGTVKWEVMetKp/nXo4gmOCKjtcTeN2EAyAhQjsH5FMEAcRZncb1CmeQe3TbaByYl8+8VUxuboqDZ0R4bp0PTtvdUqlCXY3QJ37mtyl36wzW9yFw=
 jdk:
-  - oraclejdk8
+- oraclejdk8
 script:
-  - ./gradlew sonarqube
+- sonar-scanner
+- ./gradlew sonarqube
 cache:
   directories:
-    - '$HOME/.m2/repository'
-    - '$HOME/.sonar/cache'
-    - '$HOME/.gradle'
-    - '.gradle'
+  - $HOME/.m2/repository
+  - $HOME/.sonar/cache
+  - $HOME/.gradle
+  - .gradle
