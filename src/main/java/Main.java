@@ -15,6 +15,8 @@ public class Main {
         while(stopLoop == null){
             System.out.println("anglais -->francais : 1");
             System.out.println("français -->anglais : 2");
+            System.out.println("Evaluation bicorpus français -->anglais : 3");
+            System.out.println("Evaluation bicorpus anglais -->francais : 4");
 
             int choix=Integer.parseInt(sc.nextLine());
             System.out.println("Votre mot?");
@@ -29,6 +31,12 @@ public class Main {
 
                 case 2:
                     System.out.println(Process.resultMI(bcFR, mot));
+                    break;
+                case 3:
+                    System.out.format("Evaluation du corpus Fr->En : RESULTAT = %d", Process.evaluate(bcFR));
+                    break;
+                case 4:
+                    System.out.format("Evaluation du corpus En->Fr : RESULTAT = %d", Process.evaluate(bcEN));
                     break;
 
                 default:

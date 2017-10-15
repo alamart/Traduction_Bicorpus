@@ -10,7 +10,6 @@ jdk:
 - oraclejdk8
 script:
 - sonar-scanner
-- ./gradlew sonarqube
 cache:
   directories:
   - $HOME/.m2/repository

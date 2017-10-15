@@ -1,5 +1,3 @@
-import static org.junit.Assert.*;
-
 public class ProcessTest {
 
     public static void main(String[] args) throws Exception{
@@ -11,6 +9,8 @@ public class ProcessTest {
 
         System.out.println(Process.resultMI(bcEN, "used"));
 
+        System.out.format("Evaluation du corpus Fr->En : RESULTAT = %f%n", Process.evaluate(bcFR));
+        System.out.format("Evaluation du corpus En->Fr : RESULTAT = %f%n", Process.evaluate(bcEN));
     }
 
 }

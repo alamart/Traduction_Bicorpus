@@ -216,6 +216,43 @@ public class Process {
         return -1 * score * sum;
     }
 
+    private static Double evaluateBiPhrase(BiCorpus biCorpus, BiPhrase biPhrase){
+        List<String> sourcePhrase = biPhrase.getSource();
+        List<String> targetPhrase = biPhrase.getTarget();
+        List<String> translatedPhrase = new ArrayList<>();
+        int successfulTranslation = 0;
+
+        for (String word : sourcePhrase){
+            List<Map.Entry<String, Double>> resultTranslation = resultMI(biCorpus, word);
+            if (!resultTranslation.isEmpty()){
+                translatedPhrase.add(resultTranslation.get(0).getKey());
+            }
+        }
+
+        for (int i= 0; i < Math.min(targetPhrase.size(), translatedPhrase.size()); i++){
+            if(targetPhrase.get(i).toLowerCase().equals(translatedPhrase.get(i).toLowerCase()))
+                successfulTranslation++;
+        }
+
+        return ((double)successfulTranslation)/((double)targetPhrase.size());
+    }
+
+    public static Double evaluate(BiCorpus biCorpus){
+        Double result = 0d;
+
+        for ( int i = 0; i < biCorpus.getCorpus().size(); i++){
+            if(i == 0) {
+                result = evaluateBiPhrase(biCorpus, biCorpus.getCorpus().get(0));
+            }
+            else{
+                result = (result + evaluateBiPhrase(biCorpus, biCorpus.getCorpus().get(0)))/2;
+            }
+        }
+        return result;
+    }
+
+
+
     public static List<Map.Entry<String, Double>> resultMI(BiCorpus biCorpus, String sourceWord){
         HashMap<String, Double> result=new HashMap<String, Double>();
         for (String coocurentWord :biCorpus.getCoocurencesTable().get(sourceWord).getCooc().keySet()){
