@@ -239,8 +239,10 @@ public class Process {
 
     public static Double evaluate(BiCorpus biCorpus){
         Double result = 0d;
+        logger.info("Starting Evaluation Bicorpus " + biCorpus.getDisplayName());
 
         for ( int i = 0; i < biCorpus.getCorpus().size(); i++){
+            logger.info("Bicorpus " + biCorpus.getDisplayName()+ " -> Progression evaluation " + (i*100)/biCorpus.getCorpus().size() + "%");
             if(i == 0) {
                 result = evaluateBiPhrase(biCorpus, biCorpus.getCorpus().get(0));
             }
@@ -248,6 +250,7 @@ public class Process {
                 result = (result + evaluateBiPhrase(biCorpus, biCorpus.getCorpus().get(0)))/2;
             }
         }
+        logger.info("End evaluation Bicorpus " + biCorpus.getDisplayName());
         return result;
     }
 

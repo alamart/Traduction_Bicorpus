@@ -16,7 +16,9 @@ public class Main {
             System.out.println("anglais -->francais : 1");
             System.out.println("français -->anglais : 2");
             System.out.println("Evaluation bicorpus français -->anglais : 3");
+            System.out.format("Evaluation du corpus Fr->En : RESULTAT = %f%n", Process.evaluate(bcFR));
             System.out.println("Evaluation bicorpus anglais -->francais : 4");
+            System.out.format("Evaluation du corpus En->Fr : RESULTAT = %f%n", Process.evaluate(bcEN));
 
             int choix=Integer.parseInt(sc.nextLine());
             System.out.println("Votre mot?");
