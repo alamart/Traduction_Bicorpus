@@ -10,6 +10,7 @@ See here the goals for this application and some ways of developpement
 
 ### Short Term
 
+* Add a preprocessing step to deal with the data
 * Create a method to evaluate the algorithm
 * Improve the algorithm by taking in consideration the use of alignment meaning the position of words in both source and target sentences.
 
