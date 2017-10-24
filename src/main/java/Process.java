@@ -30,6 +30,7 @@ public class Process {
         bc.setCountSourceWords(new HashMap<String, Integer>());
         bc.setCountTargetWords(new HashMap<String, Integer>());
         bc.setCoocurencesTable(new HashMap<String, Cooccurences>());
+        bc.setAlignements(new HashSet<Alignement>());
 
         try {
             Path srcPath = Paths.get(Process.class.getResource(srcFilePath).toURI());
@@ -75,7 +76,7 @@ public class Process {
     }
 
     private static void createCorpus(BiCorpus biCorpus){
-        String omittedCharacters = "[\\.-\\?!,()]";
+        String omittedCharacters = "[\\.-\\?!,()']";
         List<String> sourceSet = biCorpus.getSrcLines();
         List<String> targetSet = biCorpus.getTargetLines();
         HashMap<String, WordScore> alignements = new HashMap<>();
@@ -96,9 +97,10 @@ public class Process {
 
             addAlignementToAlignements(alignements, arraySourcePhrase, arrayTargetPhrase);
 
-            biCorpus.setAlignements(alignements);
+            biCorpus.setScoresByWord(alignements);
 
             corpus.add(bp);
+            //createAlignement(biCorpus, bp);
             countAllWordsInBiPhrase(biCorpus, bp);
 
             logger.trace("End creation BiPhrase src: {} AND target: {}", sourcePhrase, targetPhrase);
@@ -107,9 +109,11 @@ public class Process {
 
         biCorpus.setCorpus(corpus);
 
+
         logger.trace("Creating Coocurences Table");
         createCoocurencesTable(biCorpus);
         logger.trace("End creation coocurences Table");
+        predictAlignment(biCorpus);
 
     }
 
@@ -162,26 +166,95 @@ public class Process {
         }
     }
 
+    private static void createAlignement(BiCorpus bc, BiPhrase bp){
+        List<String> sourcePhrase = bp.getSource();
+        List<String> targetPhrase = bp.getTarget();
+        int i = 0;
+        int j = 0;
+        for (String sourceWord : sourcePhrase){
+            for (String targetWor : targetPhrase){
+
+                Alignement alignement = new Alignement();
+                alignement.setBiPhrase(bp)
+                          .setProbability(1./targetPhrase.size())
+                          .setSourceAlignement(i)
+                          .setTargetAlignement(j);
+                bc.getAlignements().add(alignement);
+
+                j++;
+            }
+
+            i++;
+        }
+    }
+
+    static void predictAlignment(BiCorpus biCorpus){
+        Random random = new Random();
+        BiPhrase bp = biCorpus.getCorpus().get(random.nextInt(biCorpus.getCorpus().size()-1));
+        List<String> sourcePhrase = bp.getSource();
+        List<String> targetPhrase = bp.getTarget();
+        List<String> resultPhrase = new ArrayList<>();
+        for (int i = 0; i < sourcePhrase.size(); i++){
+            List<Map.Entry<String, Double>> probableAlignedWords = resultMI(biCorpus, sourcePhrase.get(i));
+            HashMap<String, Double> bestAlignedWord = getWordScoreFromAlignedWords(biCorpus, targetPhrase, sourcePhrase.get(i));
+
+            String resultWord = bestAlignedWord.keySet().iterator().next();
+            System.out.format("Le mot \"%s\" est aligné avec le mot \"%s\" pour un score -> %f\n",
+                    sourcePhrase.get(i),
+                    resultWord,
+                    bestAlignedWord.get(resultWord)
+            );
+            resultPhrase.add(resultWord);
+        }
+        System.out.println("Phrase source : " + String.join(" ", sourcePhrase));
+        System.out.println("Phrase target : " + String.join(" ", targetPhrase));
+        System.out.println("Phrase estimee: " + String.join(" ", resultPhrase));
+
+    }
+
+    private static HashMap<String,Double> getWordScoreFromAlignedWords(BiCorpus biCorpus, List<String> phrase, String word){
+        List<Map.Entry<String, Double>> probableAlignedWords = resultMI(biCorpus, word);
+        Double bestScore = 0.;
+        String bestScoreWord = "";
+        for(String targetWord : phrase){
+            for(Map.Entry<String, Double> wordScore : probableAlignedWords){
+
+                if(targetWord.equals(wordScore.getKey())){
+                    if (wordScore.getValue() > bestScore){
+                        bestScore = wordScore.getValue();
+                        bestScoreWord = targetWord;
+
+                    }
+                }
+            }
+        }
+
+        HashMap<String,Double> result = new HashMap<>();
+        result.put(bestScoreWord, bestScore);
+        return result;
+    }
+
     private static void addAlignementToAlignements(HashMap<String, WordScore> alignements, String[] source, String[] target){
         for (int i = 0; i < source.length; i++){
             for(int j = 0; j< target.length; j++){
                 WordScore wordScoreWordI = new WordScore().setWordScore(new HashMap<String, Double>());
-                Double score = 1d;
+                Double score = 0d;
                 if (alignements.containsKey(source[i])){
                     wordScoreWordI = alignements.get(source[i]);
                 }
                 if (wordScoreWordI.getWordScore().containsKey(target[j])){
-                    score = wordScoreWordI.getWordScore().get(target[j]);
+                    score = wordScoreWordI.getWordScore().get(target[j]) ;
                 }
 
-                if (j == i )
+                /*if (j == i )
                     wordScoreWordI.getWordScore().put(target[j], score * Process.alpha);
                 else if ( Math.abs(i-j) <= 3)
                     wordScoreWordI.getWordScore().put(target[j], score * Process.beta);
                 else if ( Math.abs(i-j) <= 5)
                     wordScoreWordI.getWordScore().put(target[j], score * Process.gamma);
                 else
-                    wordScoreWordI.getWordScore().put(target[j], score * Process.sigma);
+                    wordScoreWordI.getWordScore().put(target[j], score * Process.sigma);*/
+                wordScoreWordI.getWordScore().put(target[j], score + 1./target.length);
 
                 alignements.put(source[i], wordScoreWordI);
             }
@@ -200,7 +273,7 @@ public class Process {
     }
 
     private static double calculMI(BiCorpus biCorpus, String sourceWord, String targetWord){
-        Double score = biCorpus.getAlignements().get(sourceWord).getWordScore().get(targetWord);
+        Double score = biCorpus.getScoresByWord().get(sourceWord).getWordScore().get(targetWord);
         int n=biCorpus.getCorpus().size();
         int n1A=biCorpus.getCountSourceWords().get(sourceWord);
         int n1B=biCorpus.getCountTargetWords().get(targetWord);
@@ -232,6 +305,7 @@ public class Process {
         for (int i= 0; i < Math.min(targetPhrase.size(), translatedPhrase.size()); i++){
             if(targetPhrase.get(i).toLowerCase().equals(translatedPhrase.get(i).toLowerCase()))
                 successfulTranslation++;
+
         }
 
         return ((double)successfulTranslation)/((double)targetPhrase.size());

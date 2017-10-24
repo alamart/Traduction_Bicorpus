@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class BiCorpus {
@@ -13,14 +14,25 @@ public class BiCorpus {
     private HashMap<String, Integer> countSourceWords;
     private HashMap<String, Integer> countTargetWords;
     private HashMap<String, Cooccurences> coocurencesTable;
-    private HashMap<String, WordScore> alignements;
+    private HashMap<String, WordScore> scoresByWord;
+    private HashSet<Alignement> alignements;
 
-    public HashMap<String, WordScore> getAlignements() {
+    public HashSet<Alignement> getAlignements() {
         return alignements;
     }
 
-    public void setAlignements(HashMap<String, WordScore> alignements) {
+    public BiCorpus setAlignements(HashSet<Alignement> alignements) {
         this.alignements = alignements;
+        return this;
+    }
+
+
+    public HashMap<String, WordScore> getScoresByWord() {
+        return scoresByWord;
+    }
+
+    public void setScoresByWord(HashMap<String, WordScore> scoresByWord) {
+        this.scoresByWord = scoresByWord;
     }
 
 

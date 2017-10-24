@@ -206,7 +206,7 @@ Mais il importe de souligner que les caract�ristiques inscrites dans le design
 Une fois mise en application dans  un environnement et dans des conditions donn�s, une technologie peut continuer d'�voluer  � travers son utilisation.
 Ainsi, la technologie est � la fois : 1) physiquement et socialement  construite dans un contexte social et professionnel particulier; 2) socialement construite par  les acteurs qui l'utilisent pour remplir des fonctions donn�es, dans un contexte organisationnel  donn� (Orlikowski, 1992).
 Un changement technologique en milieu de travail n'est donc pas uniquement  �technologique�.
-Il se rattache aux dynamiques organisationnelles et soul�ve des enjeux  humains et sociaux.
+
 Par exemple, la g�n�ration de technologies de l'information et de la  communication qui �merge actuellement favorise une d�centralisation des op�rations des  entreprises, qui peuvent �tre ex�cut�es � partir d'�changes entre des intervenants r�partis dans  l'espace.
 Plus rapides que le courrier et affranchies des imp�ratifs de simultan�it� de la  t�l�phonie, ces nouvelles technologies agissent �galement sur le facteur temps � travers les  activit�s d'�change et de collaboration.
 Les potentialit�s offertes par les technologies d�pendent largement d'un contexte  d'application.
